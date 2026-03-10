@@ -1,32 +1,37 @@
 #include <HardwareSerial.h>
 
-// Definir pinos para UART2
 #define RXD2 16
 #define TXD2 17
-#define BAUDRATE 115200
-
-// Criar objeto serial
-HardwareSerial Serial2(2);
+#define BAUDRATE 9600
 
 void setup() {
-  // Serial de depuração (USB)
-  Serial.begin(115200);
-  
-  // Inicializar UART2
+  // Serial USB para debug
+  Serial.begin(9600);
+  delay(1000);
+
+  Serial.println();
+  Serial.println("A iniciar...");
+
+  // UART2
   Serial2.begin(BAUDRATE, SERIAL_8N1, RXD2, TXD2);
-  Serial.println("UART2 iniciada. Aguardando dados...");
+
+  Serial.print("UART2 iniciada com baudrate = ");
+  Serial.println(BAUDRATE);
+  Serial.print("TXD2 = GPIO ");
+  Serial.println(TXD2);
+  Serial.print("RXD2 = GPIO ");
+  Serial.println(RXD2);
 }
 
 void loop() {
-  // Enviar dados a cada 2 segundos
-  Serial2.println("Ola do ESP32 UART2");
-  
-  // // Verificar se há dados recebidos na UART2
-  // if (Serial2.available()) {
-  //   String recebido = Serial2.readStringUntil('\n');
-  //   Serial.print("Recebido: ");
-  //   Serial.println(recebido);
-  // }
-  
+  String mensagem = "Ola do ESP32 UART2";
+
+  // Enviar pela UART2
+  Serial2.println(mensagem);
+
+  // Mostrar no Serial Monitor o que foi enviado
+  Serial.print("Enviado pela UART2: ");
+  Serial.println(mensagem);
+
   delay(2000);
 }
